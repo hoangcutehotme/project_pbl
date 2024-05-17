@@ -1,0 +1,17 @@
+names:
+- Garbage_Bag
+- Glass
+- Paper_Bag
+- Pet_Bottle
+- Plastic_Bag
+- can
+nc: 6
+roboflow:
+  license: CC BY 4.0
+  project: littering-detect
+  url: https://universe.roboflow.com/hoang-nguyen-trong/littering-detect/dataset/1
+  version: 1
+  workspace: hoang-nguyen-trong
+test: test/images
+train: train/images
+val: valid/images
