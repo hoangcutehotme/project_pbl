@@ -1,8 +1,8 @@
 import cv2
 import torch
 import numpy as np
-# from deep_sort_realtime.deepsort_tracker import DeepSort
-# from models.common import DetectMultiBackend, AutoShape
+from deep_sort_realtime.deepsort_tracker import DeepSort
+from models.common import DetectMultiBackend, AutoShape
 from ultralytics import YOLO
 # from roboflow import Roboflow
 # rf = Roboflow(api_key="WIFZhGRTt1WDUs9vLS9k")
