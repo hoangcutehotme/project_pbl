@@ -1,19 +1,14 @@
 import cv2
-from flask import Flask, render_template, Response, jsonify, request, session, Blueprint
-from pydantic import ValidationError
+from flask import jsonify, request, Blueprint
 from ultralytics import YOLO
 from PIL import Image
 import io
 import numpy as np
-import base64
 
 from upload_image import create_image
 
 process_api = Blueprint('process_api', __name__)
 model = YOLO("weights/best4.pt")
-
-# model = torch.hub.load("weights/best4.pt", 'yolov8n')
-
 
 @process_api.route('/api/process_image', methods=['POST'])
 def process_image():

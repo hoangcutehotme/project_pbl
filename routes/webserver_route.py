@@ -2,7 +2,7 @@ from flask import Flask, render_template, Response, jsonify, request, session, B
 #FlaskForm--> it is required to receive input from the user
 # Whether uploading a video file  to our object app model
 from flask_wtf import FlaskForm
-from wtforms import FileField, SubmitField, StringField, DecimalRangeField, IntegerRangeField
+from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
 from wtforms.validators import InputRequired, NumberRange
 import os
