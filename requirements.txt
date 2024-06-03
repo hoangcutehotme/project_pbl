@@ -1,3 +1,4 @@
+Werkzeug==2.2.2
 absl-py
 annotated-types
 anyio
