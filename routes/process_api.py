@@ -19,7 +19,7 @@ model = YOLO("weights/best4.pt")
 def process_image():
     try:
         # Check if the image is in the request
-        if 'image' not in request.files:
+        if 'files' not in request.files:
             return jsonify({"error": "Missing image data"}), 400
 
         image_file = request.files['files']

@@ -40,20 +40,23 @@ def generate_frames_web(path_x):
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-@webserver_route.route('/', methods=['GET', 'POST'])
-def frontStart():
-    # Upload File Form: Create an instance for the Upload File Form
-    form = UploadFileForm()
-    if form.validate_on_submit():
-        # Our uploaded video file path is saved here
-        file = form.file.data
-        file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), webserver_route.config['UPLOAD_FOLDER'],
-                               secure_filename(file.filename)))  # Then save the file
-        # Use session storage to save video file path
-        session['video_path'] = os.path.join(os.path.abspath(os.path.dirname(__file__)), webserver_route.config['UPLOAD_FOLDER'],
-                                             secure_filename(file.filename))
-    return render_template('videoprojectnew.html', form=form)
+# @webserver_route.route('/', methods=['GET', 'POST'])
+# def frontStart():
+#     # Upload File Form: Create an instance for the Upload File Form
+#     form = UploadFileForm()
+#     if form.validate_on_submit():
+#         # Our uploaded video file path is saved here
+#         file = form.file.data
+#         file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), webserver_route.config['UPLOAD_FOLDER'],
+#                                secure_filename(file.filename)))  # Then save the file
+#         # Use session storage to save video file path
+#         session['video_path'] = os.path.join(os.path.abspath(os.path.dirname(__file__)), webserver_route.config['UPLOAD_FOLDER'],
+#                                              secure_filename(file.filename))
+#     return render_template('videoprojectnew.html', form=form)
 
+@webserver_route.route('/', methods=['GET'])
+def frontStart():
+    return 'Home Page Route'
 
 @webserver_route.route('/home', methods=['GET', 'POST'])
 def home():
