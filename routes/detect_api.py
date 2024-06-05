@@ -1,9 +1,9 @@
-import datetime
+from datetime import datetime, timedelta
 from bson import ObjectId
 from flask import Flask, render_template, Response, jsonify, request, session, Blueprint
 from pydantic import ValidationError
 from ultralytics import YOLO
-
+from math import ceil
 from models.detection import Detection
 from config.db import client, collection
 from schemas.schema_detection import serializeDict, serializeList
@@ -17,19 +17,43 @@ def find_all_detections():
         # Get page number from query string (default to 1)
         page = int(request.args.get('page', 1))
         limit = int(request.args.get('limit', 10))
+        start_day = request.args.get('start_day')
+        end_day = request.args.get('end_day')
+
+        print(page,limit)
+
+        if start_day:
+            start_day = datetime.strptime(start_day, "%d/%m/%Y")
+        else:
+            start_day = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+
+        if end_day:
+            end_day = datetime.strptime(end_day, "%d/%m/%Y") + timedelta(days=1)
+        else:
+            end_day = datetime.now()
+
+        if end_day < start_day:
+            return jsonify({"status": 'Check value end day and start day'}), 500
+
         skip = (page - 1) * limit
 
+        # Build the query for MongoDB
+        query = {"date": {"$gte": start_day, "$lt": end_day}}
+
         # Find detections with limit and skip for pagination
-        detections = collection.find().skip(skip).limit(limit)
+        detections = collection.find(query).sort({"date": -1}).skip(skip).limit(limit)
+        total = collection.count_documents(query)
 
         # # Return the list of detections and total count (optional)
-        total_count = collection.count_documents({})
+        total_page = ceil(total/limit)
+
         return jsonify(
             {"limit": limit,
              "page": page,
-             "total": total_count,
+             "total_page": total_page,
              "data": serializeList(detections),
              })
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     # return serializeList(collection.find())
@@ -56,7 +80,7 @@ def create_detection():
         return jsonify({
             "status": "success",
             "data":
-            serializeDict(the_detect)}), 201
+                serializeDict(the_detect)}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
